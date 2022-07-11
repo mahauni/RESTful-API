@@ -1,3 +1,3 @@
-module example.com/RESTfulApi-go
+module mahauni.com/api
 
 go 1.18

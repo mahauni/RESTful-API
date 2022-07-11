@@ -1,25 +1,20 @@
 package main
 
 import (
-	"io"
+	"fmt"
 	"log"
 	"net/http"
+
+	"mahauni.com/api/routes"
 )
 
-func homePage(w http.ResponseWriter, _ *http.Request) {
-	io.WriteString(w, "Hello from a HandleFunc #1!\n")
-}
-
-func homePage2(w http.ResponseWriter, _ *http.Request) {
-	io.WriteString(w, "Hello from a HandleFunc #2!\n")
-}
-
 func handleRequests() {
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("/endpoint", homePage2)
+	http.HandleFunc("/", routes.HomePage)
+	http.HandleFunc("/endpoint", routes.HomePage2)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func main() {
+	fmt.Println("Listening in port: 8080")
 	handleRequests()
 }
