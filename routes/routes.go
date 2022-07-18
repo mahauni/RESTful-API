@@ -9,6 +9,6 @@ import (
 
 func HandleRequests() {
 	http.HandleFunc("/", services.HomePage)
-	http.HandleFunc("/endpoint", services.HomePage2)
+	http.HandleFunc("/accounts", services.GetAccounts)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
