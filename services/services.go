@@ -44,3 +44,33 @@ func GetAccounts(w http.ResponseWriter, _ *http.Request) {
 
 	io.WriteString(w, fmt.Sprintf("%+v", data.Accounts))
 }
+
+func AddAccounts(w http.ResponseWriter, _ *http.Request) {
+	var data User
+
+	file, err := os.Open("./accounts.json")
+	check(err)
+	defer file.Close()
+
+	dat, err := ioutil.ReadAll(file)
+	check(err)
+
+	addAcc := Account{
+		ID:      18,
+		Name:    "Lucas Raoni",
+		Balance: 1200,
+	}
+
+	json.Unmarshal(dat, &data)
+
+	data.Accounts = append(data.Accounts, addAcc)
+	data.NextID++
+
+	bd, err := json.Marshal(data)
+	check(err)
+
+	err = os.WriteFile("./accounts.json", bd, 0644)
+	check(err)
+
+	io.WriteString(w, fmt.Sprintf("%+v", data.Accounts))
+}
