@@ -45,8 +45,9 @@ func GetAccounts(w http.ResponseWriter, _ *http.Request) {
 	io.WriteString(w, fmt.Sprintf("%+v", data.Accounts))
 }
 
-func AddAccounts(w http.ResponseWriter, _ *http.Request) {
+func AddAccounts(w http.ResponseWriter, req *http.Request) {
 	var data User
+	var acc Account
 
 	file, err := os.Open("./accounts.json")
 	check(err)
@@ -55,13 +56,18 @@ func AddAccounts(w http.ResponseWriter, _ *http.Request) {
 	dat, err := ioutil.ReadAll(file)
 	check(err)
 
-	addAcc := Account{
-		ID:      18,
-		Name:    "Lucas Raoni",
-		Balance: 1200,
-	}
-
 	json.Unmarshal(dat, &data)
+
+	b, err := ioutil.ReadAll(req.Body)
+	check(err)
+
+	json.Unmarshal(b, &acc)
+
+	addAcc := Account{
+		ID:      data.NextID,
+		Name:    acc.Name,
+		Balance: acc.Balance,
+	}
 
 	data.Accounts = append(data.Accounts, addAcc)
 	data.NextID++
